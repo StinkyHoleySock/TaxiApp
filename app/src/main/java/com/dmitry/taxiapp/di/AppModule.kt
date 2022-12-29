@@ -1,6 +1,5 @@
 package com.dmitry.taxiapp.di
 
-
 import com.dmitry.taxiapp.data.api.TaxiApi
 import com.dmitry.taxiapp.data.repository.TaxiRepositoryImpl
 import com.dmitry.taxiapp.utils.Constants
@@ -28,7 +27,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesRepository(service: TaxiApi): TaxiRepositoryImpl {
-        return TaxiRepositoryImpl(service)
-    }
+    fun providesRepository(service: TaxiApi): TaxiRepositoryImpl = TaxiRepositoryImpl(service)
+
 }

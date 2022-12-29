@@ -1,6 +1,8 @@
 package com.dmitry.taxiapp.model
 
+import com.google.gson.annotations.SerializedName
+
 data class EndAddress(
-    val address: String,
-    val city: String
+    @SerializedName("address") val address: String,
+    @SerializedName("city") val city: String
 )

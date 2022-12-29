@@ -1,34 +1,33 @@
 package com.dmitry.taxiapp.ui.list
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmitry.taxiapp.data.repository.TaxiRepositoryImpl
-import com.dmitry.taxiapp.utils.Communication
+import com.dmitry.taxiapp.model.Order
 import javax.inject.Inject
-import com.dmitry.taxiapp.model.Orders
-import com.dmitry.taxiapp.utils.Observe
-import kotlinx.coroutines.Dispatchers
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-
+@HiltViewModel
 class ListViewModel @Inject constructor(
     private val repository: TaxiRepositoryImpl,
-    private val communication: Communication
-): Observe, ViewModel() {
+) : ViewModel() {
+
+    private val _listOrders: MutableLiveData<ArrayList<Order>> = MutableLiveData()
+    val listOrders: LiveData<ArrayList<Order>> get() = _listOrders
+
     init {
+        getOrders()
+    }
+
+    private fun getOrders() {
         viewModelScope.launch {
-            getOrders()?.let { orders -> communication.map(orders) }
+            _listOrders.value = (repository.getOrdersList().body())
+            Log.d("develop", "list: ${repository.getOrdersList().body()}")
         }
     }
 
-    private suspend fun getOrders(): Orders? = withContext(Dispatchers.Default) {
-        repository.getOrdersList().body()
-    }
-
-    override fun observe(owner: LifecycleOwner, observer: Observer<Orders>) {
-        communication.observe(owner, observer)
-    }
 }

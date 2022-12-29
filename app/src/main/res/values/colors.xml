@@ -7,4 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Text -->
+    <color name="text_title">#CC000000</color>
+    <color name="text_main">#99000000</color>
+    <color name="divider_color">#66000000</color>
+    <!-- Theme -->
+    <color name="primary">#FFC107</color>
+    <color name="primary_dark">#C79100</color>
+    <color name="primary_light">#FFF350</color>
+
 </resources>
