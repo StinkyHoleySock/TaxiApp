@@ -1,16 +1,20 @@
 package com.dmitry.taxiapp.ui.list
 
+import android.content.Context
+import android.content.res.Resources
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.dmitry.taxiapp.R
 import com.dmitry.taxiapp.databinding.ItemOrderBinding
 import com.dmitry.taxiapp.model.Order
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
 class OrdersAdapter(
-    private val orderClickListener: (order: Order) -> Unit
+    private val orderClickListener: (order: Order) -> Unit,
+//    private val context: Context
 ) : RecyclerView.Adapter<OrdersAdapter.ViewHolder>() {
 
     private var list: MutableList<Order> = mutableListOf()
@@ -27,19 +31,35 @@ class OrdersAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(list[position], holder.itemView.context)
     }
 
     inner class ViewHolder(private val binding: ItemOrderBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(response: Order) {
+        fun bind(response: Order, context: Context) {
             with(binding) {
-                val date: String = ""
-                tvDate.text = date
-                tvAmount.text = response.price.amount.toString()
-                tvStartAddress.text = ("${response.startAddress.city}, ${response.startAddress.address}")
-                tvEndAddress.text = ("${response.endAddress.city}, ${response.endAddress.address}")
+
+                tvDate.text = response.orderTime
+
+                tvStartAddress.text = context.getString(
+                    R.string.address,
+                    response.startAddress.city,
+                    response.startAddress.address
+                )
+
+                tvEndAddress.text = context.getString(
+                    R.string.address,
+                    response.endAddress.city,
+                    response.endAddress.address
+                )
+
+                tvAmount.text = context.getString(
+                    R.string.amount,
+                    response.price.amount.div(100).toString(),
+                    response.price.amount.toString().takeLast(2),
+                    response.price.currency
+                )
 
                 clContainer.setOnClickListener {
                     orderClickListener(response)

@@ -26,7 +26,6 @@ class ListViewModel @Inject constructor(
     private fun getOrders() {
         viewModelScope.launch {
             _listOrders.value = (repository.getOrdersList().body())
-            Log.d("develop", "list: ${repository.getOrdersList().body()}")
         }
     }
 

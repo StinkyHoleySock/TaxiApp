@@ -2,6 +2,16 @@
     <string name="app_name">TaxiApp</string>
     <string name="from">Откуда:</string>
     <string name="to">Куда:</string>
+    <string name="address">%1$s, %2$s</string>
+    <string name="amount">%1$s,%2$s%3$s</string>
 
-    <string name="address">%1$s, %2$d</string>
+    <string name="details_toolbar">Заказ №%1$d</string>
+    <string name="details_order">Детали поездки:</string>
+    <string name="details_driver">Водитель: %1$s</string>
+    <string name="details_auto">Автомобиль: %1$s, Гос.номер: %2$s</string>
+    <string name="details_date">Дата: %1$s</string>
+    <string name="details_amount">Стоимость: %1$s,%2$s%3$s</string>
+    <string name="details_from">Откуда: %1$s, %2$s</string>
+    <string name="details_to">Куда: %1$s, %2$s</string>
+
 </resources>

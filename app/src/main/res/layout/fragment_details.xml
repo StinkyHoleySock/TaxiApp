@@ -1,6 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/tv_order_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_title"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/details_order"/>
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginHorizontal="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_main"
+            android:textSize="14sp"
+            android:text="@string/details_date"/>
+
+        <TextView
+            android:id="@+id/tv_from"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginHorizontal="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_main"
+            android:textSize="14sp"
+            android:text="@string/details_from"/>
+
+        <TextView
+            android:id="@+id/tv_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginHorizontal="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_main"
+            android:textSize="14sp"
+            android:text="@string/details_to"/>
+
+        <TextView
+            android:id="@+id/tv_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginHorizontal="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_main"
+            android:textSize="14sp"
+            android:text="@string/details_amount"/>
+
+        <TextView
+            android:id="@+id/tv_driver_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginHorizontal="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_main"
+            android:textSize="14sp"
+            android:text="@string/details_driver"/>
+
+        <TextView
+            android:id="@+id/tv_auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginHorizontal="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_main"
+            android:textSize="14sp"
+            android:text="@string/details_auto"/>
+
+        <ImageView
+            android:id="@+id/iv_auto_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="8dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_auto"
+            tools:src="@drawable/ic_launcher_background" />
+
+    </LinearLayout>
+
+
+</ScrollView>
