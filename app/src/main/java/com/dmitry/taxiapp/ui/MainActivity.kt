@@ -1,8 +1,7 @@
 package com.dmitry.taxiapp.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.dmitry.taxiapp.R
 import dagger.hilt.android.AndroidEntryPoint
 

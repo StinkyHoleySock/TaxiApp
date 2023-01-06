@@ -1,15 +1,14 @@
 package com.dmitry.taxiapp.ui.list
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmitry.taxiapp.data.repository.TaxiRepositoryImpl
 import com.dmitry.taxiapp.model.Order
-import javax.inject.Inject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ListViewModel @Inject constructor(

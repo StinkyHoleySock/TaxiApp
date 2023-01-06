@@ -1,7 +1,6 @@
 package com.dmitry.taxiapp.ui.details
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,14 +22,12 @@ class DetailsViewModel : ViewModel() {
         val cachedImage = ImageCache.autoMap[orderId]
         if (cachedImage != null) {
             cachedImage.let { _autoBitmap.postValue(it) }
-            Log.d("develop", "cache")
             return
         }
 
         viewModelScope.launch(Dispatchers.IO) {
             val bitmap = downloadBitmap(Constants.IMAGE_URL + imageLink)
             bitmap?.let { _autoBitmap.postValue(it) }
-            Log.d("develop", "network")
             bitmap?.let { ImageCache.autoMap[orderId] = it }
         }
     }

@@ -11,7 +11,6 @@ import com.dmitry.taxiapp.utils.formatDate
 import com.dmitry.taxiapp.utils.formatTime
 import com.dmitry.taxiapp.utils.getCurrencySymbol
 
-
 class DetailsFragment : Fragment(R.layout.fragment_details) {
 
     private var _binding: FragmentDetailsBinding? = null
