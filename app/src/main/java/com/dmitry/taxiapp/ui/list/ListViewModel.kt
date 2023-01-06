@@ -18,11 +18,7 @@ class ListViewModel @Inject constructor(
     private val _listOrders: MutableLiveData<ArrayList<Order>> = MutableLiveData()
     val listOrders: LiveData<ArrayList<Order>> get() = _listOrders
 
-    init {
-        getOrders()
-    }
-
-    private fun getOrders() {
+    fun getOrders() {
         viewModelScope.launch {
             _listOrders.value = (repository.getOrdersList().body())
         }

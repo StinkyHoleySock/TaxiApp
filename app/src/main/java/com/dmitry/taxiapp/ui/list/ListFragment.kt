@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dmitry.taxiapp.R
 import com.dmitry.taxiapp.databinding.FragmentListBinding
 import com.dmitry.taxiapp.model.Order
+import com.dmitry.taxiapp.utils.NetworkUtil
 
 class ListFragment : Fragment(R.layout.fragment_list) {
 
@@ -39,6 +40,11 @@ class ListFragment : Fragment(R.layout.fragment_list) {
     }
 
     private fun subscribeUi() {
+        val networkConnection = NetworkUtil(requireContext())
+        networkConnection.observe(viewLifecycleOwner) { isConnected ->
+            if (isConnected) viewModel.getOrders()
+        }
+
         viewModel.listOrders.observe(viewLifecycleOwner) {
             ordersAdapter.setData(it)
         }

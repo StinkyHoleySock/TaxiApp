@@ -1,12 +1,11 @@
 package com.dmitry.taxiapp.utils
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.net.*
 import android.os.Build
 import androidx.lifecycle.LiveData
 
-class NetworkConnection(context: Context): LiveData<Boolean>()  {
+class NetworkUtil(context: Context) : LiveData<Boolean>() {
 
     private var connectivityManager: ConnectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -31,7 +30,6 @@ class NetworkConnection(context: Context): LiveData<Boolean>()  {
         connectivityManager.unregisterNetworkCallback(connectivityManagerCallback())
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private fun lollipopNetworkRequest() {
         val requestBuilder = NetworkRequest.Builder()
             .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)

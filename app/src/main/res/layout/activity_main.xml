@@ -14,4 +14,15 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/navigation_graph" />
 
+    <TextView
+        android:id="@+id/tv_connection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/no_internet_connection"
+        android:textColor="#FF0000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
 </FrameLayout>

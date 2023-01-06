@@ -2,6 +2,6 @@ package com.dmitry.taxiapp.utils
 
 import android.graphics.Bitmap
 
-object ImageCache {
+object CacheUtil {
     val autoMap = mutableMapOf<Int, Bitmap>()
 }
