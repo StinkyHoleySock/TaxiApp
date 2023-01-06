@@ -1,20 +1,17 @@
 package com.dmitry.taxiapp.ui.list
 
 import android.content.Context
-import android.content.res.Resources
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dmitry.taxiapp.R
 import com.dmitry.taxiapp.databinding.ItemOrderBinding
 import com.dmitry.taxiapp.model.Order
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
+import com.dmitry.taxiapp.utils.formatDate
+import com.dmitry.taxiapp.utils.getCurrencySymbol
 
 class OrdersAdapter(
     private val orderClickListener: (order: Order) -> Unit,
-//    private val context: Context
 ) : RecyclerView.Adapter<OrdersAdapter.ViewHolder>() {
 
     private var list: MutableList<Order> = mutableListOf()
@@ -22,6 +19,7 @@ class OrdersAdapter(
     fun setData(data: List<Order>) {
         list.clear()
         list.addAll(data)
+        list.sortByDescending { it.orderTime }
         notifyDataSetChanged()
     }
 
@@ -40,7 +38,7 @@ class OrdersAdapter(
         fun bind(response: Order, context: Context) {
             with(binding) {
 
-                tvDate.text = response.orderTime
+                tvDate.text = response.orderTime.formatDate()
 
                 tvStartAddress.text = context.getString(
                     R.string.address,
@@ -57,8 +55,8 @@ class OrdersAdapter(
                 tvAmount.text = context.getString(
                     R.string.amount,
                     response.price.amount.div(100).toString(),
-                    response.price.amount.toString().takeLast(2),
-                    response.price.currency
+                    (response.price.amount % 100).toString(),
+                    response.price.currency.getCurrencySymbol()
                 )
 
                 clContainer.setOnClickListener {

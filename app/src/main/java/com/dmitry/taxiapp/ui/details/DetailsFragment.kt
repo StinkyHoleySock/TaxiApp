@@ -1,40 +1,41 @@
 package com.dmitry.taxiapp.ui.details
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.dmitry.taxiapp.R
 import com.dmitry.taxiapp.databinding.FragmentDetailsBinding
-import com.dmitry.taxiapp.utils.Constants.IMAGE_URL
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.net.URL
+import com.dmitry.taxiapp.utils.formatDate
+import com.dmitry.taxiapp.utils.formatTime
+import com.dmitry.taxiapp.utils.getCurrencySymbol
+
 
 class DetailsFragment : Fragment(R.layout.fragment_details) {
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding: FragmentDetailsBinding get() = _binding!!
     private val args: DetailsFragmentArgs by navArgs()
+    lateinit var viewModel: DetailsViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[DetailsViewModel::class.java]
         _binding = FragmentDetailsBinding.bind(view)
 
         initView()
+        subscribeUi(args.order.vehicle.photo, args.order.id)
     }
 
     private fun initView() {
 
-        requireActivity().actionBar?.title =
-            requireContext().getString(R.string.details_toolbar, args.order.id)
-
         with(binding) {
-            tvDate.text = requireContext().getString(R.string.details_date, args.order.orderTime)
+            tvDate.text = requireContext().getString(
+                R.string.details_date,
+                args.order.orderTime.formatDate(),
+                args.order.orderTime.formatTime()
+            )
 
             tvFrom.text = requireContext().getString(
                 R.string.details_from,
@@ -51,8 +52,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             tvAmount.text = requireContext().getString(
                 R.string.details_amount,
                 args.order.price.amount.div(100).toString(),
-                args.order.price.amount.toString().takeLast(2),
-                args.order.price.currency
+                (args.order.price.amount % 100).toString(),
+                args.order.price.currency.getCurrencySymbol()
             )
 
             tvDriverName.text =
@@ -63,26 +64,13 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 args.order.vehicle.modelName,
                 args.order.vehicle.regNumber
             )
-
-            CoroutineScope(Dispatchers.IO).launch {
-                val bitmap = downloadBitmap(IMAGE_URL + args.order.vehicle.photo)
-                withContext(Dispatchers.Main) {
-                    ivAutoImage.setImageBitmap(bitmap)
-                }
-            }
         }
     }
 
-    private fun downloadBitmap(imageUrl: String): Bitmap? {
-        return try {
-            val connection = URL(imageUrl).openConnection()
-            connection.connect()
-            val inputStream = connection.getInputStream()
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-            inputStream.close()
-            bitmap
-        } catch (e: Exception) {
-            null //fixme
+    private fun subscribeUi(imageLink: String, orderId: Int) {
+        viewModel.getAutoImage(imageLink, orderId)
+        viewModel.autoBitmap.observe(viewLifecycleOwner) {
+            binding.ivAutoImage.setImageBitmap(it)
         }
     }
 
