@@ -1,5 +1,7 @@
 package com.dmitry.taxiapp.ui.details
 
+import android.content.Context.MODE_PRIVATE
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -10,6 +12,7 @@ import com.dmitry.taxiapp.databinding.FragmentDetailsBinding
 import com.dmitry.taxiapp.utils.formatDate
 import com.dmitry.taxiapp.utils.formatTime
 import com.dmitry.taxiapp.utils.getCurrencySymbol
+import java.io.IOException
 
 class DetailsFragment : Fragment(R.layout.fragment_details) {
 
@@ -63,13 +66,33 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 args.order.vehicle.modelName,
                 args.order.vehicle.regNumber
             )
+
         }
     }
 
     private fun subscribeUi(imageLink: String, orderId: Int) {
         viewModel.getAutoImage(imageLink, orderId)
+        viewModel.autoBitmap.value?.let { bitmap ->
+            saveImage(
+                image = bitmap,
+                fileName = System.currentTimeMillis().toString()
+            )
+        }
+
         viewModel.autoBitmap.observe(viewLifecycleOwner) {
             binding.ivAutoImage.setImageBitmap(it)
+        }
+    }
+
+    private fun saveImage(image: Bitmap, fileName: String) {
+        try {
+            requireContext().openFileOutput("$fileName", MODE_PRIVATE).use { stream ->
+                if (!image.compress(Bitmap.CompressFormat.JPEG, 95, stream)) {
+                    throw IOException("")
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
 

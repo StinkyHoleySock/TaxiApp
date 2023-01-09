@@ -1,15 +1,16 @@
 package com.dmitry.taxiapp.ui.details
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmitry.taxiapp.utils.CacheUtil
 import com.dmitry.taxiapp.utils.Constants
-import com.dmitry.taxiapp.utils.downloadBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.net.URL
 
 
 class DetailsViewModel : ViewModel() {
@@ -31,4 +32,19 @@ class DetailsViewModel : ViewModel() {
             bitmap?.let { CacheUtil.autoMap[orderId] = it }
         }
     }
+
+    private fun downloadBitmap(imageUrl: String): Bitmap? {
+        return try {
+            val connection = URL(imageUrl).openConnection()
+            connection.connect()
+            val inputStream = connection.getInputStream()
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            inputStream.close()
+            bitmap
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 }
