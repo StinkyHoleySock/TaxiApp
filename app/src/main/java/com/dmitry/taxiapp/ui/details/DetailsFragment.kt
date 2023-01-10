@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.dmitry.taxiapp.R
 import com.dmitry.taxiapp.databinding.FragmentDetailsBinding
+import com.dmitry.taxiapp.utils.applyVisibility
 import com.dmitry.taxiapp.utils.formatDate
 import com.dmitry.taxiapp.utils.formatTime
 import com.dmitry.taxiapp.utils.getCurrencySymbol
@@ -81,6 +82,11 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
         viewModel.autoBitmap.observe(viewLifecycleOwner) {
             binding.ivAutoImage.setImageBitmap(it)
+        }
+
+        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            binding.ivAutoImage.applyVisibility(!isLoading)
+            binding.progressCircular.applyVisibility(isLoading)
         }
     }
 

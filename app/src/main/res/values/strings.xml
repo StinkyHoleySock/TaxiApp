@@ -14,5 +14,6 @@
     <string name="details_from">Откуда: %1$s, %2$s</string>
     <string name="details_to">Куда: %1$s, %2$s</string>
     <string name="no_internet_connection">No internet connection</string>
+    <string name="image_of_vehicle">image of vehicle</string>
 
 </resources>

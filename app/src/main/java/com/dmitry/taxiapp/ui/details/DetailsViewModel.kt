@@ -17,19 +17,22 @@ class DetailsViewModel : ViewModel() {
 
     private val _autoBitmap: MutableLiveData<Bitmap> = MutableLiveData()
     val autoBitmap: LiveData<Bitmap> get() = _autoBitmap
+    private val _loading: MutableLiveData<Boolean> = MutableLiveData()
+    val loading: LiveData<Boolean> get() = _loading
 
-    fun getAutoImage(imageLink: String, orderId: Int){
-
+    fun getAutoImage(imageLink: String, orderId: Int) {
+        _loading.value = true
         val cachedImage = CacheUtil.autoMap[orderId]
         if (cachedImage != null) {
             cachedImage.let { _autoBitmap.postValue(it) }
+            _loading.value = false
             return
         }
-
         viewModelScope.launch(Dispatchers.IO) {
             val bitmap = downloadBitmap(Constants.IMAGE_URL + imageLink)
             bitmap?.let { _autoBitmap.postValue(it) }
             bitmap?.let { CacheUtil.autoMap[orderId] = it }
+            _loading.postValue(false)
         }
     }
 
