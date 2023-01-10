@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity() {
 
         val networkConnection = NetworkUtil(applicationContext)
         networkConnection.observe(this) { isConnected ->
-            applyVisibility(binding.tvConnection, !isConnected)
-            applyVisibility(binding.fragmentContainer, isConnected)
+            binding.tvConnection.applyVisibility(!isConnected)
+            binding.fragmentContainer.applyVisibility(isConnected)
         }
     }
 
