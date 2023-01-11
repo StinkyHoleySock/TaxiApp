@@ -8,10 +8,16 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.dmitry.taxiapp.R
 import com.dmitry.taxiapp.databinding.FragmentDetailsBinding
 import com.dmitry.taxiapp.utils.*
+import com.dmitry.taxiapp.utils.Constants.DIRECTORY_FULL_NAME
+import com.dmitry.taxiapp.workManager.DeleteCachedImage
 import java.io.*
+import java.util.concurrent.TimeUnit
 
 class DetailsFragment : Fragment(R.layout.fragment_details) {
 
@@ -66,6 +72,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 viewModel.autoBitmap.observe(viewLifecycleOwner) {
                     ivAutoImage.setImageBitmap(it)
                     saveToInternalStorage(it, fileName)
+                    delayedDeleteFromInternalStorage(fileName)
                 }
             }
 
@@ -101,7 +108,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
     private fun loadImageFromStorage(fileName: String): Boolean {
         return try {
-            val image = File(Constants.DIRECTORY_FULL_NAME, fileName)
+            val image = File(DIRECTORY_FULL_NAME, fileName)
             val bitmap = BitmapFactory.decodeStream(FileInputStream(image))
             binding.ivAutoImage.setImageBitmap(bitmap)
             binding.progressCircular.applyVisibility(false)
@@ -110,6 +117,15 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             e.printStackTrace()
             false
         }
+    }
+
+    private fun delayedDeleteFromInternalStorage(fileName: String) {
+        val data = Data.Builder().putString(Constants.REQUEST_ID, fileName).build()
+        val deleteCachedImageRequest = OneTimeWorkRequestBuilder<DeleteCachedImage>()
+            .setInitialDelay(10, TimeUnit.MINUTES)
+            .setInputData(data)
+            .build()
+        WorkManager.getInstance(requireContext()).enqueue(deleteCachedImageRequest)
     }
 
     override fun onDestroyView() {
