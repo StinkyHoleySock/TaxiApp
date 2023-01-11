@@ -6,4 +6,5 @@
 - Hilt
 - Retrofit
 - Navigation component
+- WorkManager
 - Load images without libraries
