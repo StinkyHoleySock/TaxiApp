@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dmitry.taxiapp.utils.CacheUtil
 import com.dmitry.taxiapp.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,18 +19,11 @@ class DetailsViewModel : ViewModel() {
     private val _loading: MutableLiveData<Boolean> = MutableLiveData()
     val loading: LiveData<Boolean> get() = _loading
 
-    fun getAutoImage(imageLink: String, orderId: Int) {
+    fun getAutoImage(imageLink: String) {
         _loading.value = true
-        val cachedImage = CacheUtil.autoMap[orderId]
-        if (cachedImage != null) {
-            cachedImage.let { _autoBitmap.postValue(it) }
-            _loading.value = false
-            return
-        }
         viewModelScope.launch(Dispatchers.IO) {
             val bitmap = downloadBitmap(Constants.IMAGE_URL + imageLink)
             bitmap?.let { _autoBitmap.postValue(it) }
-            bitmap?.let { CacheUtil.autoMap[orderId] = it }
             _loading.postValue(false)
         }
     }
